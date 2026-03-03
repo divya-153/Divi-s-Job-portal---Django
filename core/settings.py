@@ -1,4 +1,5 @@
 from pathlib import Path
+import dj_database_url
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -65,16 +66,13 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'walkinhub',
-        'USER':'root',
-        'PASSWORD':'root',
-        'HOST':'localhost',
-        'PORT':'3306',
-    }
+    'default': dj_database_url.config(
+        default=os.environ.get('DATABASE_URL')
+    )
 }
+
 # Tell Django to Use This Custom User
 AUTH_USER_MODEL = 'users.User'
 
