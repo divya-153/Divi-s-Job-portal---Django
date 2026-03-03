@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content  %}
+<main>
+      <section id="banner">  
+        <div class="banner">
+            <div class="branding">
+                <div class="intro-text">
+                 <h1>Get Daily Walk-In Job Updates Near You</h1>
+                 <h3>Updated daily with real interview details so you never miss an opportunity.</h3>
+                </div> 
+                 <div class="sign-log-buttons">
+                   <a href="{% url 'signup' %}"><button type="button">Sign Up Free</button></a>
+                   <a href="{% url 'login' %}"><button type="button">Login</button></a>
+                 </div>
+            </div>
+            <div class="illustration">
+
+                    <!--  Street -->
+                    <div class="scene street">
+                        <div class="bg"></div>
+
+                        <img class="walk-sad" src="{% static 'images/walk-sad.svg' %}" alt="man-walk">
+                        <img class="notification" src="{% static 'images/nodify2.png' %}" alt="getting mobile nodification">
+                    </div>
+
+                    <!-- Interview -->
+                    <div class="scene interview">
+                        <img src="{% static 'images/interview.svg' %}" alt="attend-interview">
+                    </div>
+
+                    <!--  Happy -->
+                    <div class="scene happy-man">
+                        <img src="{% static 'images/happy.svg' %}" alt="happy-man">
+                    </div>
+                  <img class="final-image" src="{% static 'images/job-searching.svg' %}">
+
+               </div>
+
+        </div>
+    </section>
+    </main>
+
+</body>
+</html>
+{% endblock  %}

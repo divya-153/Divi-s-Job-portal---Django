@@ -1,0 +1,645 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>View Interview Details</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<style>
+    :root {
+  --blue: #2563eb;
+  --gray: #6b7280;
+  --bg: #f3f4f6;
+  --card: #ffffff;
+}
+
+/* RESET */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background: var(--bg);
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  background: var(--card);
+  padding: 16px 24px;
+  margin-bottom: 24px;
+  border-radius: 14px;
+  box-shadow: 0 6px 14px  rgba(44, 70, 183, 0.434);
+}
+.header p{
+   font-size: 20px;
+   font-weight: 600;
+   color: var(--blue);
+}
+.header img{
+    width: 45px;
+}
+.main{
+    display: flex;
+    justify-content:space-around;
+    padding: 35px;
+}
+
+.card{
+max-width: 500px;
+background-color: var(--card);
+border: 1px solid blue;
+border-radius: 5px;
+padding: 10px;
+box-shadow: 0 6px 14px  rgba(12, 12, 12, 0.215);
+}
+.card h2{
+    text-align: center;
+}
+#poster{
+      width: 100%;
+      height: 35vh;
+      object-fit: cover;
+      padding: 10px;
+      border-radius: 15px; 
+}
+
+ .profile {
+      display: flex;
+      gap: 15px;
+      padding: 15px;
+      color: white;
+      align-items: center;
+      
+    }
+.profile_header{
+    background-color: var(--blue);
+    border-radius: 10px;
+}
+.acc-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+  .details {
+  padding: 10px;
+  font-size: 14px;
+}
+
+.details ul {
+  list-style: disc;
+  padding-left: 20px;
+  margin-top: 6px;
+}
+
+.details ul li {
+  margin-bottom: 6px;
+}
+
+.application-link {
+  color: var(--blue);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.application-link:hover {
+  text-decoration: underline;
+}
+.actions{
+  display: flex;
+  justify-content: space-around;
+  padding: 10px;
+}
+.actions img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  cursor: pointer;
+  
+}
+@keyframes rotateLike {
+  0%   { transform: rotate(0deg); }
+  20%  { transform: rotate(20deg); }
+  40%  { transform: rotate(-20deg); }
+  60%  { transform: rotate(15deg); }
+  80%  { transform: rotate(-15deg); }
+  100% { transform: rotate(0deg); }
+}
+
+
+.like:active {
+  animation: rotateLike 0.3s ease;
+   transform-origin: center;
+}
+
+
+.popup {
+    display: none;
+    background: white;
+    border: 1px solid black;
+    border-radius: 6px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    z-index: 100;
+    max-width:250px;
+    cursor: pointer;
+    font-size: 18px;
+    color:white;
+    background-color: var(--blue);
+}
+.sharePopupBtn{
+  cursor: pointer;
+  padding: 10px;
+  border: 2px solid white;
+  color:var(--blue);
+  font-weight: 600;
+  margin-top: 15px;
+  background: white;
+}
+/* Arrow pointing to button */
+.popup::before {
+    content: "";
+    position: absolute;
+    top: -8px;
+    left: 15px;
+    border-width: 8px;
+    border-style: solid;
+    border-color: transparent transparent white transparent;
+}
+.commentsContainer {
+    max-height: 260px;   /* approx 3 comments */
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+}
+
+.commentsPage{
+    padding-top: 20px;  
+    display: none;
+  }
+.commentsBox {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  border: 3px solid black;
+  border-radius: 45px;
+  padding:10px;
+}
+.commentsBox textarea {
+padding: 5px;
+border: none;
+outline: none;
+width: 100%;
+min-width: 150px;
+font-size: 16px;
+resize: none;
+flex: 1;
+}
+.commentsBox img{
+  width: 35px;
+  height: 35px;
+  position: absolute;
+  right: 15px;
+  top: 15px;
+}
+.commentHeader {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.commentHeader .commentMenu {
+  margin-left: auto;   /* 🔥 pushes to right */
+  width: 18px;
+  cursor: pointer;
+}
+
+.menuPopup {
+  position: absolute;
+  right: 0;
+  top: 40px;
+  display: none;
+  z-index: 10;
+  background-color: var(--card);
+  border: 1px solid black;
+  box-shadow: 0 6px 14px rgba(12, 12, 12, 0.215);
+  border-radius: 5px;
+  border-collapse: collapse;   /* 🔥 Important */
+  
+}
+
+.menuPopup td{
+  border: 1px solid blue;
+  padding: 8px 12px;
+  color: black;
+}
+
+
+ .moreBtn {
+      background: none;
+      border: none;
+      color: var(--blue);
+      font-weight: bold;
+      cursor: pointer;
+      padding-left: 10px;
+      display: none;
+    }
+</style>
+<body>
+<header>
+  <div class="header">
+   <a href="{% url "seeker_dashboard" %}">
+     <img id="backward"  src="{% static "images/backward.png" %}">
+   </a>
+    <p>Hello want to know details about interview and are you intersted to apply ?</p>
+    {% if profile.photo %}
+       <img src="{{profile.photo.url}}" alt="profile-photo">
+    {% else %}
+        <img src="{% static "images/acc1.png" %}" alt="profile-icon">
+    {% endif %}
+  </div>
+</header>
+
+<main>
+<div class="main">
+ <section class="card">
+  <div class="profile_header">
+  <div class="profile">
+    {% if interview.employer.photo %}
+        <img class="acc-img" src="{{interview.employer.photo.url}}"/>
+    {% else %}
+        <img class="acc-img" src="{% static "images/acc1.png" %}" />
+    {% endif %}
+    <div>
+      <p class="hr-name">{{interview.employer.user.username}} </p>
+      <p>
+        <span class="comp-name">{{interview.employer.company_name}} </span>
+        <span class="prof-role"> | {{interview.employer.role|capfirst}} </span>
+      </p>
+    </div>
+    </div>
+    
+  </div>
+  <div class="poster">
+    {% if interview.poster %}
+       <img id="poster" src="{{interview.poster.url}}" />
+    {% else %}
+        <img id="poster" src="{% static "images/poster.avif" %}" />
+    {% endif %}
+  </div>
+
+  <div class="details">
+    <p>📢 WE ARE HIRING!</p>
+
+    <p class="jobTit_type"><strong>{{interview.job_title}} </strong></p>
+
+    <p>
+      Start your career with
+      <strong class="comp-name1"> {{interview.employer.company_name}} </strong>
+    </p>
+
+    <p><strong>Role Details</strong></p>             {% comment %} {{interview.}} <strong></strong>{% endcomment %}
+    <ul>
+      <li class="jobTit"> <strong>Position: </strong> {{interview.job_title}} </li>
+      <li class="date"><strong>Date: </strong> {{interview.start_date}} {% if interview.end_date %}To {{interview.end_date}}{% endif %} </li>
+      <li class="location"><strong>Location: </strong>{{interview.venue}}</li>
+      <li class="qualification"><strong>Qualification: </strong>{{interview.qualification}}</li>
+      <li class="job-type"><strong>Job-Type: </strong> {{interview.job_type}} | {{interview.job_mode}}</li>
+    </ul>
+
+    <p><strong>Why Join Us?</strong></p>
+    <ul>
+    {% for reasons in interview.why_join_us.splitlines %}
+        <li>{{reasons}}</li>
+    {% endfor %}
+    </ul>
+
+    
+
+    <p>👉 Don’t Miss This Opportunity!</p>
+
+    <p>🔗
+      <a class="application-link" href="{{interview.applicationLink}}" target="_blank">Apply Here</a>
+    </p>
+
+    
+  </div>
+<hr>
+  <div class="actions">
+    <figure>
+{% if is_liked %}
+<img class="like" src="{% static 'images/liked.png' %}">
+{% else %}
+<img class="like" src="{% static 'images/like.png' %}">
+{% endif %}
+<figcaption style="text-align: center;" class="likeCount">{{ like_count }}</figcaption>
+</figure>
+    <figure>
+      <img class="comments" src="{% static "images/comments.png" %}" alt="comments-icon">
+      <figcaption style="text-align: center;"  class="commentsCount">{{ comment_count }}</figcaption>
+    </figure>
+    <figure class="shareicon">
+      <img class="share" src="{% static "images/share.png" %}" alt="share-icon">
+      <div class="popup" id="sharePopup">
+        <p>Share this post:</p>
+        <input type="text" class="sharePopupBtn">
+    </div>
+    </figure>   
+  </div>
+<hr>
+
+
+
+<!-- TEMPLATE -->
+ <section class="commentsPage">
+ <form method="POST" action="{% url 'add_comments' interview.id %}"> 
+  {% csrf_token %}
+  <div class="commentsBox">
+    <textarea id="writeComment" class="writeComment" name="writeComment" placeholder="Add a comment"></textarea>
+    <button type="submit"> <img class="sentBtn" src="{% static "images/sentmsg.png" %}"> <button>
+  </div>
+</form>
+
+<h3 style="padding-top: 20px;">Reviews</h3>
+<div class="commentsContainer">
+{% for comment in comments %}
+
+  <div class="commentsView" >
+     <div class="singleComment">
+        <div class="profile commentHeader">
+
+            {% if comment.seeker.photo %}
+                <img class="acc-img" src="{{ comment.seeker.photo.url }}">
+            {% else %}
+                <img class="acc-img" src="{% static "images/acc1.png" %}" />
+            {% endif %}
+
+            <div style="color:black;"> 
+              <p class="seekerName" style="color:var(--blue); font-weight:600">{{comment.seeker.user.username}}</p>
+              <p style="font-size:12px;color:gray;">
+                  {{ comment.created_at|timesince }} ago
+              </p>
+            </div>
+
+            <img class="commentMenu" src="{% static "images/3dot.png" %}" alt="menu" />
+
+            <table class="menuPopup">
+            <tr> <td class="cEdit" data-id="{{comment.id}}">Edit</td></tr>
+            <tr> <td class="cDelete" data-id="{{comment.id}}">Delete</td></tr>
+            </table>
+        </div>
+      <div class="review">
+       <p class="commentText">{{comment.comment}}</p>
+<textarea class="editBox" style="display:none;">{{comment.comment}}</textarea>
+<button class="saveEdit" style="display:none;" data-id="{{comment.id}}">
+  Save
+</button>
+      </div>
+    <hr>
+
+  </div>
+
+</div>
+{% endfor %}
+</div>
+<button class="moreBtn">More</button>
+</section>
+    
+</section>
+  </div>
+</main>
+<script>
+
+// ================= LIKE SYSTEM =================
+const likeBtn = document.querySelector(".like");
+const likeCountDisplay = document.querySelector(".likeCount");
+
+likeBtn.addEventListener("click", function () {
+
+  fetch("/toggle_like/{{ interview.id }}/")
+    .then(res => res.json())
+    .then(data => {
+
+      likeBtn.src = data.liked
+        ? "{% static 'images/liked.png' %}"
+        : "{% static 'images/like.png' %}";
+
+      likeCountDisplay.innerText = data.like_count;
+
+    });
+
+});
+
+
+
+// ================= COMMENTS PAGE TOGGLE =================
+const commentsPage = document.querySelector(".commentsPage");
+const commentsIcon = document.querySelector(".comments");
+const commentsContainer = document.querySelector(".commentsContainer");
+const moreBtn = document.querySelector(".moreBtn");
+
+let expanded = false;
+
+commentsIcon.addEventListener("click", () => {
+
+  if (commentsPage.style.display === "block") {
+    commentsPage.style.display = "none";
+  } else {
+    commentsPage.style.display = "block";
+
+    // Wait for render before checking height
+    setTimeout(() => {
+
+      if (commentsContainer.scrollHeight > commentsContainer.clientHeight) {
+        moreBtn.style.display = "block";
+      } else {
+        moreBtn.style.display = "none";
+      }
+
+    }, 50);
+  }
+
+});
+
+
+
+// ================= MORE / LESS =================
+moreBtn.addEventListener("click", () => {
+
+  if (!expanded) {
+    commentsContainer.style.maxHeight =
+      commentsContainer.scrollHeight + "px";
+    moreBtn.innerText = "Less";
+  } else {
+    commentsContainer.style.maxHeight = "260px";
+    moreBtn.innerText = "More";
+  }
+
+  expanded = !expanded;
+
+});
+
+
+
+// ================= COMMENT MENU (3 DOTS) =================
+document.querySelectorAll(".commentMenu").forEach(menu => {
+
+  menu.addEventListener("click", function (e) {
+
+    document.querySelectorAll(".menuPopup").forEach(p => {
+      p.style.display = "none";
+    });
+
+    const popup = this.parentElement.querySelector(".menuPopup");
+
+    if (popup) {
+      popup.style.display = "block";
+    }
+
+    e.stopPropagation();
+  });
+
+});
+
+
+
+// ================= DELETE COMMENT =================
+document.querySelectorAll(".cDelete").forEach(btn => {
+
+  btn.addEventListener("click", function () {
+
+    const id = this.dataset.id;
+    const commentBox = this.closest(".commentsView");
+
+    if (confirm("Delete this comment?")) {
+
+      fetch(`/delete_comment/${id}/`)
+        .then(res => res.json())
+        .then(data => {
+
+          if (data.success) {
+
+            commentBox.remove();
+
+            // Reduce comment count
+            const countDisplay = document.querySelector(".commentsCount");
+            countDisplay.innerText =
+              parseInt(countDisplay.innerText) - 1;
+
+            // Recheck overflow
+            if (commentsContainer.scrollHeight <= commentsContainer.clientHeight) {
+              moreBtn.style.display = "none";
+            }
+
+          }
+
+        });
+
+    }
+
+  });
+
+});
+
+
+
+// ================= EDIT COMMENT =================
+document.querySelectorAll(".cEdit").forEach(btn => {
+
+  btn.addEventListener("click", function () {
+
+    const commentBox = this.closest(".singleComment");
+
+    const text = commentBox.querySelector(".commentText");
+    const textarea = commentBox.querySelector(".editBox");
+    const saveBtn = commentBox.querySelector(".saveEdit");
+
+    text.style.display = "none";
+    textarea.style.display = "block";
+    saveBtn.style.display = "inline-block";
+
+  });
+
+});
+
+
+
+document.querySelectorAll(".saveEdit").forEach(btn => {
+
+  btn.addEventListener("click", function () {
+
+    const commentId = this.dataset.id;
+    const commentBox = this.closest(".singleComment");
+    const textarea = commentBox.querySelector(".editBox");
+    const text = commentBox.querySelector(".commentText");
+
+    fetch(`/update_comment/${commentId}/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "X-CSRFToken": "{{ csrf_token }}"
+      },
+      body: `comment=${textarea.value}`
+    })
+      .then(res => res.json())
+      .then(data => {
+
+        if (data.updated_comment) {
+          text.innerText = data.updated_comment;
+        }
+
+        text.style.display = "block";
+        textarea.style.display = "none";
+        btn.style.display = "none";
+
+      });
+
+  });
+
+});
+
+
+
+// ================= CLOSE POPUPS =================
+document.addEventListener("click", () => {
+  document.querySelectorAll(".menuPopup").forEach(p => {
+    p.style.display = "none";
+  });
+});
+
+
+
+// ================= SHARE POPUP =================
+const shareBtn = document.querySelector(".share");
+const sharePopup = document.getElementById("sharePopup");
+const shareInput = document.querySelector(".sharePopupBtn");
+
+shareInput.value = window.location.href;
+
+shareBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
+  sharePopup.style.display =
+    sharePopup.style.display === "block" ? "none" : "block";
+});
+
+document.addEventListener("click", (e) => {
+  if (!sharePopup.contains(e.target) && !shareBtn.contains(e.target)) {
+    sharePopup.style.display = "none";
+  }
+});
+
+</script>
+
+</body>
+</html>

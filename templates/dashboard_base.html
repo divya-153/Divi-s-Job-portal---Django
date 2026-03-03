@@ -1,0 +1,295 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        :root{
+            --primary:#2a4aff;
+            --bg:#f5f7ff;
+            --sidebar:#111827;
+            --white:#ffffff;
+            --muted:#9ca3af;
+        }
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial, Helvetica, sans-serif;
+        }
+
+        body{
+            background:var(--bg);
+        }
+
+                
+        .avatar img {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: var(--blue);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 32px;
+        margin: auto;
+        object-fit:contain;
+        }
+
+        .default-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: #2563eb;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 40px;
+        margin:auto;
+        }
+
+        .layout{
+            display:flex;
+            min-height:100vh;
+        }
+
+        /* ===== SIDEBAR ===== */
+
+        .sidebar{
+            width:240px;
+            background:var(--primary);
+            color:var(--white);
+            padding:30px 20px;
+            display:flex;
+            flex-direction:column;
+            transition:0.3s;
+}
+
+            /* Hidden state */
+            .sidebar.hidden{
+                 transform:translateX(-100%);
+            }
+
+            #menuToggle{
+    display:none;
+    font-size:22px;
+    cursor:pointer;
+    margin-right:15px;
+}
+
+/* Close button hidden by default */
+.close-btn{
+    display:none;
+    text-align:right;
+    font-size:22px;
+    cursor:pointer;
+    margin-bottom:15px;
+}
+
+        .logo{
+            font-size:22px;
+            font-weight:bold;
+            margin-bottom:40px;
+            color:var(--white);
+        }
+
+        .nav-links{
+            list-style:none;
+        }
+
+        .nav-links li{
+            margin-bottom:18px;
+        }
+
+        .nav-links a{
+            text-decoration:none;
+            color:var(--white);
+            font-size:15px;
+            display:block;
+            padding:8px 12px;
+            border-radius:8px;
+            transition:0.3s;
+        }
+
+        .nav-links a:hover{
+            background:var(--primary);
+            color:var(--white);
+            border:1px solid white;
+            border-radius:5px;
+        }
+
+        .logout{
+            margin-top:auto;
+            display:flex;
+            flex-direction:row;
+        }
+
+        .logout a{
+            color:white;
+            text-decoration:none;
+            font-weight:600;
+        }
+
+        /* ===== CONTENT AREA ===== */
+
+        .main{
+            flex:1;
+            padding:40px;
+        }
+
+        .topbar{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:30px;
+        }
+
+        .topbar h2{
+            font-size:22px;
+        }
+
+        .user-info{
+            font-size:14px;
+            color:#555;
+        }
+
+   
+/* Mobile header hidden by default */
+.mobile-header{
+    display:none;
+    align-items:center;
+    gap:15px;
+    margin-bottom:20px;
+}
+.mobile-title{
+    position:absolute;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:18px;
+    font-weight:600;
+}
+
+/* Responsive */
+@media(max-width:900px){
+
+    .mobile-header{
+        display:flex;
+    }
+
+    .topbar h2{
+        display:none;
+    }
+}
+
+/* Responsive */
+@media(max-width:900px){
+
+    .sidebar{
+        position:fixed;
+        left:0;
+        top:0;
+        height:100%;
+        z-index:1000;
+         transform:translateX(0);
+    }
+     .sidebar.hidden{
+        transform:translateX(-100%);
+    }
+
+
+    #menuToggle{
+        display:block;
+    }
+     .close-btn{
+        display:block;
+        margin-bottom:15px;
+    }
+    .topbar h2{
+        display:none
+    }
+    .topbar img{
+        width:60px;
+    }
+}
+
+    </style>
+</head>
+
+<body>
+
+<div class="layout">
+
+    <!-- Sidebar -->
+    <div class="sidebar ">
+<div class="close-btn" id="closeSidebar">✖</div>
+        <div class="logo">
+            JobPortal
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="{% url 'employer_dashboard' %}">Dashboard</a></li>
+            <li><a href="{% url 'post_interviews' %}">Post Interview</a></li>
+            <li><a href="{% url 'my_interviews' %}">My Interviews</a></li>
+            <li><a href="{% url 'view_applicants' %}">Applicants</a></li>
+        </ul>
+
+        <div class="logout">
+            <a href="{% url 'index' %}"><img src="{% static "images/logout-white.png" %}" alt="logout">
+                <p> Logout</p>
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main">
+        <div class="mobile-header">
+            <span id="menuToggle">☰</span>
+            <h3 class="mobile-title" >Employer Dashboard</h3>
+        </div>
+      <div class="topbar">
+         <img src ="{% static "images/logo-seeker.png" %}">
+            <div style="display:flex;align-items:center; ">
+       
+        <h2>{% block page_title %}Dashboard{% endblock %}</h2>
+    </div>
+            <div class="avatar">
+            {% if profile.photo %}
+                <img src="{{ profile.photo.url }}" alt="Profile Photo">
+                {% else %}
+                <div class="default-avatar">👤</div>
+                {% endif %}
+            </div>
+        </div>
+
+        {% block content %}
+        {% endblock %}
+
+    </div>
+
+</div>
+<script>
+const toggleBtn = document.getElementById("menuToggle");
+const sidebar = document.querySelector(".sidebar");
+const closeBtn = document.getElementById("closeSidebar");
+
+// Open sidebar (mobile)
+toggleBtn.addEventListener("click", function(){
+    sidebar.classList.remove("hidden");
+});
+
+// Close sidebar (mobile)
+closeBtn.addEventListener("click", function(){
+    sidebar.classList.add("hidden");
+});
+</script>
+
+
+  
+
+</body>
+</html>

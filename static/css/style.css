@@ -1,0 +1,264 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    
+}
+body {
+  overflow-x: hidden;
+}
+
+
+:root{
+    --blue:#2A4BFF;
+    --white:#F7F9FC;
+    --pink :#FF4D67;
+    --gray:#8C8C8C;
+    --text:#111111;
+}
+
+.navigation{
+    background-color: var(--blue) ;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+.navigation nav{
+    display: flex;
+    align-items: center;
+}
+
+.navigation nav a{
+     color: white;
+     padding: 10px;
+     font-size:20px;
+     text-decoration: none;
+
+}
+.navigation img{
+   height: 90px;
+   
+  
+}
+
+.navigation nav img{
+  width: 50px;
+  height: 50px;  
+}
+
+body{
+   background: linear-gradient(to right,#2a4aff8d,white);
+}
+/* 2) Banner */
+.banner {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    min-height: 80vh;
+    align-items: center;       
+    padding: 60px 20px 20px 20px; 
+    column-gap: 20px;
+}
+.branding {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    justify-content: flex-start;  
+    margin-top: 0;                
+}
+
+.intro-text{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.branding h1{
+    font-weight: 600 !important;
+    color: #111111;
+    font-size: 36px;
+}
+
+.branding h3{
+    font-weight: 400;
+    color:#444444 ;
+    line-height: 1.5;
+    
+}
+.sign-log-buttons{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    
+    
+}
+.sign-log-buttons button{
+    border-radius: 20px;
+    padding: 13px 28px;
+    font-size: 17px;
+    font-weight: 600;
+    min-width: 160px;
+    transition: all 0.3s ease;
+    max-width: 180px;
+}
+
+.sign-log-buttons button:nth-child(1){
+    border: 3px solid var(--blue);
+    color: var(--blue);
+}
+.sign-log-buttons button:nth-child(2){
+    background-color: var(--blue);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.sign-log-buttons button:nth-child(1):hover{
+    background-color: var(--blue) ;
+    color: white;
+    transform: scale(1.05);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+     border: 2px solid white;
+}
+.sign-log-buttons button:nth-child(2):hover{
+    background-color:#0923b4;
+    color: white;
+    transform: scale(1.05);
+     box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+}
+
+
+/* 2) ii) illustration  */
+
+.illustration{
+    height: 400px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.scene {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+.street {
+  opacity: 1;
+  animation: street-out 1.5s 5.2s ease forwards;
+}
+@keyframes street-out {
+  to {
+    opacity: 0;
+  }
+}
+
+
+.bg{
+    background-image: url("../images/city.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: bottom center;
+    height: 100%;    
+}
+.walk-sad {
+  position: absolute;
+  bottom: 40px;
+  left: 40px;
+  width: 180px;
+  animation: walk 3.5s ease-in-out forwards;
+}
+
+@keyframes walk {
+  to {
+    transform: translateX(120px);
+    opacity: 0;
+  }
+
+}
+.notification{
+  position: absolute;
+  bottom: 40px;
+  left: 140px;
+  width: 140px;
+  opacity: 0;
+  animation: notify 1.5s 3.5s ease forwards;
+}
+
+@keyframes notify {
+  to {
+    opacity: 1;
+  }
+}
+
+.interview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fade-in 2s 6.8s ease forwards;
+}
+.interview img {
+  height: 100%;
+}
+
+.happy-man {
+ display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fade-in 2.5s 9s ease forwards;
+}
+
+.happy-man img {
+  height: 100%;
+}
+
+@keyframes fade-in {
+  50% {
+    opacity: 1;
+  }
+
+}
+
+.final-image{
+    opacity: 0;
+    animation:fade-in-final 1s 11s forwards;
+}
+
+@keyframes fade-in-final {
+ to {
+    opacity: 1;
+  }
+
+}
+@media (max-width:768px) {
+    .navigation img{
+        width: 80px;
+        height: auto;
+    }
+    .navigation nav img{
+        width: 40px;
+        height: auto;
+    }
+    .navigation nav a{
+           font-size: 15px;
+    }
+    .banner{
+        grid-template-columns: 1fr;
+        row-gap: 35px;
+    }
+    .branding{
+        text-align: center;
+        align-items: center;
+    }
+    .sign-log-buttons{
+        flex-direction: column;
+        gap: 5px;
+    }
+    .sign-log-buttons button{
+        width: 100%;
+        max-width: 250px;
+    }
+    .interview img{
+
+        width: 75%;
+    };
+    .happy-man img{
+        height: 75%;
+    }
+}

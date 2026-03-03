@@ -1,0 +1,276 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<style>
+  
+        
+main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+
+main h1 {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+main p {
+  font-size: 16px;
+  color: #6B7280; /* gray */
+  margin-bottom: 16px;
+}
+
+/* ====== FORM ====== */
+.form {
+  display: grid;
+  row-gap: 40px;
+  gap:45px;
+  counter-reset: step;
+}
+
+/* ====== SECTION HEADING ====== */
+.heading {
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  background: #F4F7FF;
+  border-radius: 8px;
+  border-left: 5px solid var(--blue);
+  text-align: center;
+  box-shadow: inset -8px -3px 5px rgb(128, 128, 128);
+  counter-increment: step;
+}
+
+.heading h2 {
+  position: relative;
+  padding-left: 10px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.heading h2::before {
+  content: "Step " counter(step) " - ";
+  color: var(--blue);
+  font-weight: 700;
+}
+
+/* ====== FORM SECTIONS ====== */
+
+.form section {
+  width: 100%;
+  padding: 20px;
+  border: 1px solid var(--blue);
+  background-color: #ffffff;
+  box-shadow: 10px 10px 2px #2a4affcf;
+  border-radius: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+section:focus-within {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(42, 75, 255, 0.3);
+}
+
+.form section:hover {
+  transform: translateY(-2px);
+  box-shadow: 15px 15px 10px #2a4affb7;
+}
+
+
+
+/* ====== CARD GRID ====== */
+.card {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 32px;
+  row-gap: 20px;
+  padding: 16px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #000;
+}
+
+.card label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+}
+
+/* ====== INPUTS ====== */
+.card input,
+.card select,
+.card textarea {
+  height: 44px;
+  padding: 10px 14px;
+  font-size: 15px;
+  border-radius: 8px;
+  border: 1px solid #D1D5DB;
+}
+
+.card input:focus,
+.card select:focus,
+.card textarea:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(42, 75, 255, 0.2);
+  outline: none;
+}
+
+.full-width{
+      grid-column:1/-1;
+    }
+.radio-group{
+      display:flex;
+      gap:20px;
+    }
+.radio-group input[type="radio"] {
+  width: 18px;   /* Set your preferred fixed width */
+  height: 18px;  /* Set your preferred fixed height */
+  flex-shrink: 0; /* Prevents the browser from resizing it */
+  cursor: pointer;
+}
+.radio-group label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+.form button{
+      border-radius: 20px;
+      padding: 10px 14px;
+      font-size: 17px;
+      font-weight: 600;
+      min-width: 80px;
+      transition: all 0.3s ease;
+      max-width: 150px;
+      border:3px solid var(--blue);
+  }
+
+  .form button:hover{
+      background-color: var(--blue);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      color: white;
+
+  }
+@media (max-width:550px) {
+  .card 
+  {
+      margin: 5px;
+      grid-template-columns: 1fr;
+      Row-gap: 16px;
+  }
+
+.card label{
+          min-width: 50px;     
+      }
+  .card input{
+      min-width: 100px;
+      margin-left: 15px;
+  }
+  .full-width{
+      grid-column:1/-1;
+    }
+  .radio-group{
+        display:flex;
+        flex-direction: column;
+        gap:20px;   
+      }
+  }
+
+
+    </style>
+   
+<main> 
+    <h1> Complete Your Profile</h1>
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+  <div class="form">
+ 
+  <section id="personal-info">
+  <div class="heading">
+    <h2>HR Basic Info</h2>
+  </div>
+    <div class="card">
+          <label for="username">Full Name</label>
+          <input type="text" id="name" value="{{request.user.username}}" name="name" required>
+
+          <label for="email">Work Email</label>
+          <input type="email" id="email" value="{{request.user.email}}" name="email" readonly>
+          
+           <label>Country Code</label>
+          <select name="country_code" required>
+            <option value="+91">🇮🇳 +91</option>
+            <option value="+1">🇺🇸 +1</option>
+            <option value="+44">🇬🇧 +44</option>
+          </select>
+
+          <label for="mobile">Mobile Number</label>
+          <input type="tel" id="mobile" name="mobile" required>
+
+          <label for="role">Company Role</label>
+            <select id="role" name="role" required>
+            <option value="">Select</option>
+            <option value="hr">HR</option>
+            <option value="recruiter">Recruiter</option>
+            <option value="manager">Manager</option>
+            </select>
+          <label for="photo">Photo</label>
+          <input type="file" name="photo" accept="image/*">
+    </div>
+  </section>
+
+
+ 
+  <section id="company-details">
+  <div class="heading">
+     <h2>Company Details</h2>
+  </div>
+    <div class="card">
+    <label for="company_name">Company Name</label>
+    <input type="text" id="company_name" name="company_name" required>
+
+    <label for="company_logo">Upload your company logo(JPG/PNG)</label>
+    <input type="file" id="company_logo" name="company_logo" accept="image/*" required>
+
+    <label for="company_type">Company Type</label>
+    <select id="company_type" name="company_type" required>
+            <option value="">Select</option>
+            <option value="startup">Startup</option>
+            <option value="mnc">MNC</option>
+            <option value="consultancy">Consultancy</option>
+    </select>
+
+    <label for="company_size">Company Size</label>
+    <select id="company_size" name="company_size" required>
+             <option value="">Select</option>
+            <option  value="1 - 10">1 - 10</option>
+            <option value="10 - 50">10 - 50</option>
+            <option value="50+">50+</option>
+    </select>
+
+        
+  </div>
+  </section>
+
+
+  <section id="location">
+  <div class="heading">
+       <h2>Location</h2>
+  </div>
+    <div class="card">
+    <label for="office_city">Office City</label>
+    <input type="text" id="office_city" name="office_city" required>
+
+    <label for="office_address">Address</label>
+   <textarea id="office_address" name="office_address" required></textarea>
+</section>
+          <button  type="submit">Save</button>
+  </div>
+</form>
+</main>
+{% endblock content %}

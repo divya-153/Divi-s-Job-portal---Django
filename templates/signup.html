@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content  %}
+
+    <style>
+
+        .sign-up{
+            display: flex;
+            flex-direction: column;
+            align-items: center; 
+            justify-self: center;
+            gap: 20px;
+
+        }
+        .sign-up a{
+            font-size: 17px;
+        }
+          
+        .form{
+            display: grid;
+            grid-template-columns: repeat(2,1fr);
+            gap: 20px;
+            padding: 20px;
+            color: black;
+            font-size: 17px;
+            font-weight: 600;
+            margin: 0 auto; 
+            border-radius: 10px;
+            text-align: left;    
+            border: 3px solid var(--blue);
+            max-width: 500px;
+            width: 100%;
+
+        }
+        .form input,select{
+            min-width: 100px;
+            max-height: fit-content;
+            padding: 8px 12px;
+        }
+          .form label{
+                    min-width: 150px;  
+                }
+        #createBtn{
+            border-radius: 20px;
+            padding: 8px 15px;
+            font-size: 17px;
+            font-weight: 600;
+            min-width: 100px;
+            transition: all 0.3s ease;
+            max-width: 180px;
+            border: 3px solid var(--blue);
+            color: var(--blue);
+            background-color: white;
+            text-decoration: none;
+            text-align: center;
+         }
+         #createBtn:hover{
+            background-color: var(--blue) ;
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+            border: 2px solid white;
+         }
+         .illustration img {
+            max-width: 100%;
+            height: auto;
+        }
+
+          @media (max-width:450px) {
+            .form
+            {
+                margin: 5px;
+                grid-template-columns: 1fr;
+                gap:10px;
+            }
+
+          .form label{
+                    min-width: 50px;
+                    
+                }
+
+            .form input{
+                min-width: 100px;
+                margin-left: 15px;
+            }
+         
+    }
+
+    </style>
+
+    <main>
+      <section id="banner">  
+        <div class="banner">
+            <div class="branding">
+                
+            <form method="POST">
+                {% csrf_token %}
+                <div class="sign-up">
+                    <h2>Sign-Up <a href="{% url 'login'%}">or login</a></h2>
+                    {% if email_error %}
+                    <p style="color:red;">{{ email_error }}</p>
+                    {% endif %}
+
+                    <div class="form">    
+                        <label for="name">Name</label>
+                    <div>
+                        <input type="text" id="name" name="username" autocomplete="name" placeholder="Enter name" required>
+                            {% if username_error %}
+                            <p style="color:red;">{{ username_error }}</p>
+                            {% endif %}
+                    </div>
+
+                        <label for="email">Email</label  >
+                        <input type="email" id="email" name="email" autocomplete="email" placeholder="Enter email" required>
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" placeholder="Create a Strong Password" required> 
+                        <label for="profile">Profile</label>
+                            <select name="profile" required>
+                                <option value="" disabled selected>Choose</option>
+                                <option value="seeker">Seeker</option>
+                                <option value="employer">Employer</option>
+                            </select>
+                    </div>
+                    <button type="submit" id="createBtn">Create</button>
+    </div>
+    </form>
+            </div>
+            <div class="illustration">
+                  <img src=" {% static 'images/recruiting.png'  %}">
+               </div>
+
+        </div>
+    </section>
+    </main>
+
+ {% endblock %}

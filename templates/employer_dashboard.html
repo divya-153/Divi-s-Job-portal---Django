@@ -1,0 +1,35 @@
+{% extends "dashboard_base.html" %}
+
+{% block page_title %}
+Employer Dashboard
+{% endblock %}
+
+{% block content %}
+
+<div style="background:white;padding:30px;border-radius:12px;box-shadow:0 8px 20px rgba(0,0,0,0.05);margin-bottom:30px;text-align:center;">
+    <h2>Hello, {{ request.user.username }} 👋</h2>
+    <p style="color:#666;margin-top:10px;">
+        Manage your walk-in interviews and applicants in one place.
+    </p>
+</div>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;">
+
+    <div style="background:white;padding:20px;border-radius:12px;box-shadow:0 6px 15px rgba(0,0,0,0.05);text-align:center;">
+        <h3 style="color:#2a4aff;">0</h3>
+        <p>Total Interviews</p>
+    </div>
+
+    <div style="background:white;padding:20px;border-radius:12px;box-shadow:0 6px 15px rgba(0,0,0,0.05);text-align:center;">
+        <h3 style="color:#2a4aff;">0</h3>
+        <p>Total Applicants</p>
+    </div>
+
+    <div style="background:white;padding:20px;border-radius:12px;box-shadow:0 6px 15px rgba(0,0,0,0.05);text-align:center;">
+        <h3 style="color:#2a4aff;">0</h3>
+        <p>Upcoming Interviews</p>
+    </div>
+
+</div>
+
+{% endblock %}

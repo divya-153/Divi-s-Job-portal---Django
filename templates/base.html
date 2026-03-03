@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WalkInHub</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+
+<header id="navigation">
+    <div class="navigation">
+        <img src="{% static 'images/logo.png' %}" alt="logo" title="Website logo">
+
+        <nav>
+            <a href="{% url 'index' %}">Home</a>
+            <a href="#about">About</a>
+            <a href="{% url 'signup' %}">
+                <img src="{% static 'images/account.png' %}">
+            </a>
+        </nav>
+    </div>
+</header>
+
+<!-- PAGE CONTENT WILL COME HERE -->
+<main>
+    {% if messages %}
+    {% for message in messages %}
+        <div  style="color:green; text-align:center" class="alert {{ message.tags }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+    {% block content %}
+    {% endblock %}
+</main>
+
+<footer>
+    <p style="text-align:center;">© 2026 WalkInHub</p>
+</footer>
+{% load django_browser_reload %}
+{% django_browser_reload_script %}
+</body>
+</html>

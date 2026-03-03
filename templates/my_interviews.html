@@ -1,0 +1,314 @@
+{% load static %}
+  <style>
+   :root {
+        --blue: #2563eb;
+        --gray: #6b7280;
+        --bg: #f3f4f6;
+        --card: #ffffff;
+        }
+
+    body {
+      background: #f3f4f6;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+    }
+    button{
+      cursor:pointer;
+    }
+
+    #cards-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .interview-card {
+      width: 100%;
+      max-height: 520px;
+      overflow: hidden;
+      background-color: white;
+      border-radius: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: max-height 0.4s ease;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+    }
+
+    .header{
+      display: flex;
+      background-color: var(--blue);
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 4px;
+    }
+
+    .profile {
+      display: flex;
+      gap: 15px;
+      padding: 10px;
+      color: white;
+      align-items: center;  
+    }
+
+    .acc-img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit:cover;
+    }
+
+    .actions img{
+      width: 30px;
+    }
+
+    .poster img {
+      width: 100%;
+      height: 35vh;
+      object-fit: cover;
+      padding: 10px;
+    }
+
+    .moreBtn {
+      background: none;
+      border: none;
+      color: var(--blue);
+      font-weight: bold;
+      cursor: pointer;
+      padding-left: 10px;
+    }
+
+    .details {
+      padding: 10px;
+      font-size: 14px;
+    }
+
+    .details ul {
+      list-style: disc;
+      padding-left: 20px;
+      margin-top: 6px;
+    }
+
+    .details ul li {
+      margin-bottom: 6px;
+    }
+
+    .application-link {
+      color: var(--blue);
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .application-link:hover {
+      text-decoration: underline;
+    }
+
+    .template {
+      display: none;
+    }
+    {% comment %} POPUP BOX {% endcomment %}
+        .modal{
+        display: flex;
+        justify-content: center;
+        }
+       .popupBox{
+        display: none;
+        background-color: var(--blue);
+        border: 4px solid var(--bg);
+        padding: 20px 30px;
+        box-shadow: 0 6px 14px  rgba(44, 70, 183, 0.434);
+        height: 100%;
+        min-width: 200px;
+        max-width: 300px;
+        text-align: center;
+        color: white;
+        font-size: 18px;
+        font-weight: 600;
+       }
+       .popupBtns{
+        display: flex;
+        justify-content: space-around;
+       }
+       .popupBtns button{
+        padding: 8px 20px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+       }
+
+       form button{
+        border:none;
+        background:none;
+       }
+  </style>
+<body>
+  <div id="cards-container">
+
+{% for interview in interviews %}
+
+<div class="interview-card">
+
+  <div class="header">
+    
+    <div class="profile">
+        {% if interview.employer.photo %}
+              <img class="acc-img" src="{{interview.employer.photo.url}}" alt="profile-pic" />
+            {% else %}
+              <img class="acc-img" src="{% static "images/acc1.png" %}" alt="profile-pic" />
+        {% endif %}
+     
+      <div>
+        <p class="hr-name">{{ interview.employer.user.username }}</p>
+        <p>
+          <span class="comp-name">{{ interview.employer.company_name }}</span>
+          <span> | {{interview.employer.role|capfirst}} </span>
+        </p>
+      </div>   {% comment %} username {% endcomment %}
+    </div> {% comment %} profile {% endcomment %}
+
+      {% if request.user == interview.employer.user %}
+    <div class="actions">
+        <a href="#" onclick="openConfirm(event, 'Are you sure you want to edit?', '{% url "edit_interview" interview.id %}')">
+           <img src="{% static 'images/edit-icon (2).png' %}" alt="edit">
+        </a>
+
+       <form method="POST" action="{% url 'delete_interview' interview.id %}">
+          {% csrf_token %}
+          <button type="submit" 
+              onclick="openConfirm(event, 'Are you sure you want to delete?', '{% url "delete_interview" interview.id %}')">
+              <img src="{% static 'images/delete-icon (2).png' %}" alt="delete">
+          </button>
+      </form>
+
+       
+        
+    </div>
+    {% endif %}
+
+
+  </div>    {% comment %} header {% endcomment %}
+
+  <div class="poster">
+    {% if interview.poster %}
+      <img src="{{ interview.poster.url }}" />
+    {% else %}
+    <img src="{% static "images/poster.avif" %}">
+    {% endif %}
+  </div>
+  <button class="moreBtn">More</button>
+
+  <div class="details">
+   <p style="color: var(--blue); font-weight: bold;">
+  📢 WE ARE HIRING!
+</p>
+
+    <p> <strong>
+      {{ interview.job_title|upper  }}
+      ({{ interview.experience|upper }})
+    </strong>
+    </p>
+     <p>
+      Start your career with
+      <strong class="comp-name1">{{interview.employer.company_name}} </strong>
+    </p>
+
+    <ul>
+      <li>Position: {{ interview.job_title }}</li>
+      <li>
+        Date:
+        {{ interview.start_date|date:"d M, Y" }}
+        {% if interview.end_date %}
+            To {{ interview.end_date|date:"d M, Y" }}
+  {% endif %}
+      </li>
+      <li>Qualification: {{ interview.qualification|default:"Not Mentioned" }}</li>
+      <li>Location: {{ interview.venue|default:"Not Mentioned" }}</li>
+      <li>Mode: {{ interview.job_type|capfirst }} | {{ interview.job_mode|capfirst }}</li>
+    </ul>
+
+    <p><strong>Why Join Us?</strong></p>
+    <ul>
+    {% for reasons in interview.why_join_us.splitlines %}
+        <li>{{reasons}}</li>
+    {% endfor %}
+    </ul>
+ <p>👉 Don’t Miss This Opportunity!</p>
+
+    {% if interview.application_link %}
+<p>
+  🔗 <a href="{{ interview.application_link }}" target="_blank" class="application-link">
+    Apply Here
+  </a>
+</p>
+{% endif %}
+
+  </div>
+
+</div>
+
+{% empty %}
+<p>No interviews posted yet.</p>
+{% endfor %}
+
+</div>
+
+{% comment %} PopUp Box {% endcomment %}
+<div class="modal">
+        <div id="popupbox" class="popupBox">
+            <p id="popupText"> Are you sure ?</p>
+            <div class="popupBtns">
+                <button id="yes">Yes</button>
+                <button id="no">No</button>
+            </div>
+        </div>
+</div>
+
+
+<script>
+  const cards = document.querySelectorAll(".interview-card");
+
+  cards.forEach(card => {
+    const moreBtn = card.querySelector(".moreBtn");
+    let expanded = false;
+
+    moreBtn.addEventListener("click", () => {
+      if (!expanded) {
+        card.style.maxHeight = card.scrollHeight + "px";
+        moreBtn.innerText = "Less";
+      } else {
+        card.style.maxHeight = "520px";
+        moreBtn.innerText = "More";
+      }
+      expanded = !expanded;
+    });
+  });
+
+    const yes=document.getElementById("yes");
+    const no=document.getElementById("no");
+    const popupbox=document.getElementById("popupbox");
+    const popupText=document.getElementById("popupText");
+    let redirectUrl='';
+
+
+    function openConfirm(event, message, url) {
+        event.preventDefault();  // stops link or form submit
+
+        popupbox.style.display = "block";
+        popupText.innerText = message;
+        redirectUrl = url;
+    }
+
+    yes.addEventListener("click", () => {
+        popupbox.style.display = "none";
+        if (redirectUrl) {
+            window.location.href = redirectUrl;
+        }
+    });
+
+    no.addEventListener("click", () => {
+        popupbox.style.display = "none";
+    });
+</script>
+</body>

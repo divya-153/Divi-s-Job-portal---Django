@@ -1,0 +1,26 @@
+core => project
+
+1)settings.py   => writing everything what are we used
+
+
+users => app 
+
+1)models.py   => write models what are need for this app
+
+2) views.py   => write logic for backend for this app
+
+B.E - CSE / IT
+
+Good Environment
+Good Salary
+Best Place for Learn
+
+
+
+https://docs.google.com/forms/d/e/1FAIpQLSc601mx-06uUFPcKKFUT-qqZFjuqn28bX9exTSkBCO3gb3E_g/viewform
+
+
+this is my interview_details page 
+here UI we improve later first check the logic
+
+mainly like,comments, share 
