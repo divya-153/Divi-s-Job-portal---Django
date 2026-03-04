@@ -431,15 +431,27 @@ html{
     </div>
   
     <div class="profile-section">
-      <h4>Resume</h4>
-      <img src="{% static 'images/resume.png' %}">
-      {% if profile.resume %}
-          <a id="resume" target="_blank" href="{{profile.resume.url}}" >Click</a>
-      {% else %}
-        <p>No resume uploaded</p>
-      {% endif %}
-       
-    </div>
+  <h4>Resume</h4>
+  <img src="{% static 'images/resume.png' %}">
+
+  {% if profile.resume %}
+      <br>
+      <a id="resume"
+         href="{{ profile.resume.url }}?fl_attachment=true"
+         style="display:inline-block;
+                margin-top:8px;
+                padding:6px 14px;
+                background:#2563eb;
+                color:white;
+                border-radius:6px;
+                text-decoration:none;
+                font-size:14px;">
+         Download Resume
+      </a>
+  {% else %}
+      <p>No resume uploaded</p>
+  {% endif %}
+</div>
     
     <!-- ===== STATS ===== -->
   <div class="stats">
