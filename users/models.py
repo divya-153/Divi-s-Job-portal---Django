@@ -85,7 +85,7 @@ class EmployerProfile(m.Model):
     country_code = m.CharField(max_length=10)
     role = m.CharField(max_length=50)
 
-    photo = m.ImageField(upload_to="employer/photos/", blank=True, null=True)
+    photo = CloudinaryField('photo', blank=True, null=True)
     company_logo = m.ImageField(upload_to="employer/logos/", blank=True, null=True)
 
     company_name = m.CharField(max_length=100)
