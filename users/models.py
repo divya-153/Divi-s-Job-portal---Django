@@ -1,8 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models as m
-import cloudinary
-import cloudinary.uploader
-import cloudinary.api
+from cloudinary.models import CloudinaryField
 
 
 # =========================
@@ -62,8 +60,8 @@ class SeekerProfile(m.Model):
     college = m.CharField(max_length=150)
     year_of_passing = m.IntegerField()
 
-    resume = cloudinary.CloudinaryField('resume',resource_type='raw', blank=True, null=True)
-    photo = cloudinary.CloudinaryField('photo', blank=True, null=True)
+    resume = CloudinaryField('resume', resource_type='raw', blank=True, null=True)
+    photo = CloudinaryField('photo', blank=True, null=True)
 
     relocate = m.BooleanField(default=False)
 
