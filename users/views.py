@@ -160,8 +160,11 @@ def seeker_dashboard(request):
  
 @login_required
 def edit_seeker_profile(request):
-    profile=request.user.seeker_profile
-    
+    try:
+        profile = request.user.seeker_profile
+    except SeekerProfile.DoesNotExist:
+        profile = SeekerProfile.objects.create(user=request.user)
+        
     if request.method == "POST":
 
         # Get form data
