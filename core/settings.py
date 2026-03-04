@@ -1,6 +1,9 @@
 from pathlib import Path
 import dj_database_url
 import os
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,7 +32,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_browser_reload',     # FOR RELOAD PAGE AUTOMATICALLY
     'users',
+    'cloudinary',
+    'cloudinary_storage',
 ]
+
+# Tell Django to use Cloudinary for media
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -135,3 +143,15 @@ LOGIN_URL = "login"
 # MEDIA
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+#CLOUD
+
+# Cloudinary config
+cloudinary.config(
+    cloud_name=os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    api_key=os.environ.get('CLOUDINARY_API_KEY'),
+    api_secret=os.environ.get('CLOUDINARY_API_SECRET')
+)
+
+# Tell Django to use Cloudinary for media
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
