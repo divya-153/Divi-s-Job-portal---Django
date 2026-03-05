@@ -436,18 +436,16 @@ html{
 
   {% if profile.resume %}
       <br>
-      <a id="resume"
-         href="{{ profile.resume.url }}?fl_attachment=true"
-         style="display:inline-block;
-                margin-top:8px;
-                padding:6px 14px;
-                background:#2563eb;
-                color:white;
-                border-radius:6px;
-                text-decoration:none;
-                font-size:14px;">
-         Download Resume
-      </a>
+      <a id="resume" href="{{ profile.resume.url }}" download
+   style="display:inline-block;
+          padding:6px 14px;
+          background:#2563eb;
+          color:white;
+          border-radius:6px;
+          text-decoration:none;
+          font-size:14px;">
+    Download Resume
+</a>
   {% else %}
       <p>No resume uploaded</p>
   {% endif %}
